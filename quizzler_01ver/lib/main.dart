@@ -41,12 +41,6 @@ class _QuizPageState extends State<QuizPage> {
 
   */
 
-  int questionNumber = 0;
-
-  void changeQuestion() {
-    questionNumber = questionNumber + 1;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,7 +53,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.getQuestionText(questionNumber),
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -84,18 +78,16 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                bool correctAnswer = quizBrain.getQuestionAnswer();
+
+                if (correctAnswer == true) {
+                  print('user got it right!');
+                } else {
+                  print('user got it wrong');
+                }
+
                 setState(() {
-                  bool correctAnswer =
-                      quizBrain.getQuestionAnswer(questionNumber);
-
-                  if (correctAnswer == true) {
-                    print('user got it right!');
-                  } else {
-                    print('user got it wrong');
-                  }
-
-                  //metodo 1
-                  changeQuestion();
+                  quizBrain.nextQuestion();
                 });
                 //The user picked true.
               },
@@ -117,17 +109,16 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  bool correctAnswer2 =
-                      quizBrain.getQuestionAnswer(questionNumber);
+                bool correctAnswer2 = quizBrain.getQuestionAnswer();
 
-                  if (correctAnswer2 == false) {
-                    print('user got it right');
-                  } else {
-                    print('user got it wrong');
-                  }
-                  //metodo 2
-                  questionNumber++;
+                if (correctAnswer2 == false) {
+                  print('user got it right');
+                } else {
+                  print('user got it wrong');
+                }
+
+                setState(() {
+                  quizBrain.nextQuestion();
                 });
                 //The user picked false.
               },
