@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -33,13 +34,35 @@ class _QuizPageState extends State<QuizPage> {
   void checkAnswer(bool userPickerAnswer) {
     bool correctAnswer = quizBrain.getQuestionAnswer();
 
-    if (userPickerAnswer == correctAnswer) {
-      print('user got it right!');
-    } else {
-      print('user got it wrong');
-    }
-
     setState(() {
+      if (quizBrain.isFinish() == true) {
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+        ).show();
+
+        quizBrain.reset();
+        scoreKeeper = [];
+      } else {
+        if (userPickerAnswer == correctAnswer) {
+          print('user got it right!');
+          scoreKeeper.add(
+            Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          );
+        } else {
+          print('user got it wrong');
+          scoreKeeper.add(
+            Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+          );
+        }
+      }
       quizBrain.nextQuestion();
     });
   }
@@ -116,10 +139,31 @@ class _QuizPageState extends State<QuizPage> {
   }
 }
 
-/*
-question1: 'You can lead a cow down stairs but not up stairs.', false,
-question2: 'Approximately one quarter of human bones are in the feet.', true,
-question3: 'A slug\'s blood is green.', true,
-*/
 
 //Apliquei dois metodos de acrescentar +1 na variavel questionNumber
+
+/*
+if (userPickerAnswer == correctAnswer) {
+      print('user got it right!');
+      scoreKeeper.add(
+        Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
+      );
+    } else {
+      print('user got it wrong');
+      scoreKeeper.add(
+        Icon(
+          Icons.close,
+          color: Colors.red,
+        ),
+      );
+    }
+
+    setState(() {
+      quizBrain.nextQuestion();
+    });
+
+
+*/
